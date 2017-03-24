@@ -10,11 +10,9 @@ class SingleMovie extends React.Component {
   }
 
 render(){
-  console.log(this.props.data)
+  console.log(this.props.data.title)
   return <div>
-    <div className='col-sm-12'>
-      {this.props.data.title}
-    </div>
+      {this.props.data.title} stars {this.props.data.actors}
   </div>
 }
 }

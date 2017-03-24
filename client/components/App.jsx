@@ -10,7 +10,8 @@ class App extends React.Component {
     this.searchMovies = this.searchMovies.bind(this)
     this.addNewMovie = this.addNewMovie.bind(this)
     this.state = {
-      allMovies: [{
+      allMovies: [
+        {
         title: 'O Brother Where Art Thou?',
         genre: 'comedy',
         rating: 10,
@@ -23,10 +24,14 @@ class App extends React.Component {
       rating: 10,
       actors: 'George Clooney, John Turturro',
       year: 2000
-    }]
+    }
+  ]
       // searchText: '',
 
     }
+  }
+  componentDidMount(){
+    console.log('hooray')
   }
   searchMovies(){
     console.log('searching for movies')
@@ -35,7 +40,7 @@ class App extends React.Component {
     console.log('adding movie')
   }
   render() {
-    // console.log(this.state.allMovies[0].title)
+    console.log(this.state.allMovies)
     var allMyMovies = this.state.allMovies.map((data, i) => {
       // console.log(data)
       return <SingleMovie data={data} key={i} />
