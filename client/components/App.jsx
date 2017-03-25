@@ -10,58 +10,51 @@ class App extends React.Component {
     this.searchMovies = this.searchMovies.bind(this)
     this.addNewMovie = this.addNewMovie.bind(this)
     this.state = {
-      allMovies: [
-        {
-        title: 'O Brother Where Art Thou?',
-        genre: 'comedy',
-        rating: 'PG-13',
-        actors: 'George Clooney, John Turturro',
-        year: 2000
-      },
-    {
-      title: 'The Rock',
-      genre: 'action',
-      rating: 'R',
-      actors: 'Sean Connery, Nicolas Cage',
-      year: 1996
+      allMovies: [],
+      searchText: '',
+      newMovTitle: '',
+      newMovGenre: '',
+      newMoveActors: '',
+      newMovRating: '',
+      newMovYear: ''
     }
-  ],
-    searchText: '',
-    newMovTitle: '',
-    newMovGenre: '',
-    newMoveActors: '',
-    newMovRating: '',
-    newMovYear: ''
-    }
+  }
+  componentDidMount(){
+    if(localStorage.getItem('allMovies')){
+    this.setState({
+      allMovies: JSON.parse(localStorage.getItem('allMovies'))
+    })
+  }
+  console.log(this.state.allMovies)
   }
 
   searchMovies(){
-    console.log('searching for movies')
+    // console.log('searching for movies')
   }
   addNewMovie(){
-    // console.log('adding movie')
     var movTitle = document.getElementById('newMovTitle').value
     var movGenre = document.getElementById('newMovGenre').value
     var movActors = document.getElementById('newMovActors').value
     var movRating = document.getElementById('newMovRating').value
     var movYear = document.getElementById('newMovYear').value
-    // console.log(movTitle)
-    var newMovie = {title: movTitle,
-    genre: movGenre,
-  rating: movRating,
-actors: movActors,
-year: movYear}
-console.log(newMovie)
-var movieList = this.state.allMovies
-movieList.push(newMovie)
-console.log(movieList)
-this.setState({
-  allMovies: movieList
-})
-
+    var newMovie =
+    {
+      title: movTitle,
+      genre: movGenre,
+      rating: movRating,
+      actors: movActors,
+      year: movYear
+    }
+    var movieList = this.state.allMovies
+    movieList.push(newMovie)
+    this.setState({
+      allMovies: movieList
+    })
+    console.log(movieList)
+    localStorage.setItem('allMovies', JSON.stringify(movieList))
   }
   render() {
-    console.log(this.state.allMovies)
+    // console.log(this.state.allMovies)
     var allMyMovies = this.state.allMovies.map((data, i) => {
       // console.log(data)
       return <SingleMovie data={data} key={i} />

@@ -10,7 +10,7 @@ class SingleMovie extends React.Component {
   }
 
 render(){
-  console.log(this.props.data.title)
+  // console.log(this.props.data.title)
   return <div>
   <div className='col-sm-4'>
     <div className='movieBox'>
