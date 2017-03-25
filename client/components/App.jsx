@@ -9,14 +9,10 @@ class App extends React.Component {
     super(props)
     this.searchMovies = this.searchMovies.bind(this)
     this.addNewMovie = this.addNewMovie.bind(this)
+    this.beforeSearch = this.beforeSearch.bind(this)
+    this.testFunction = this.testFunction.bind(this)
     this.state = {
-      allMovies: [],
-      searchText: '',
-      newMovTitle: '',
-      newMovGenre: '',
-      newMoveActors: '',
-      newMovRating: '',
-      newMovYear: ''
+      allMovies: []
     }
   }
   componentDidMount(){
@@ -24,14 +20,57 @@ class App extends React.Component {
     this.setState({
       allMovies: JSON.parse(localStorage.getItem('allMovies'))
     })
+   }
   }
-  console.log(this.state.allMovies)
+  testFunction(){
+    this.setState({
+      allMovies: JSON.parse(localStorage.getItem('allMovies'))
+    })
   }
-
+  //properly resets this.state.allmovies to reflect all movies in library prior to narrowing search field in searchMovies()
+  beforeSearch(){
+    this.setState({
+      allMovies: JSON.parse(localStorage.getItem('allMovies'))
+    })
+    setTimeout(() => this.searchMovies(), 0)
+  }
+  //begins to narrow results based on search criteria
   searchMovies(){
-    // console.log('searching for movies')
+    this.setState({
+      allMovies: JSON.parse(localStorage.getItem('allMovies'))
+    })
+    console.log(this.state.allMovies)
+    var resultsArray = []
+    var searchText = document.getElementById('searchText').value
+    var movieQuery = this.state.allMovies.forEach(function(data){
+        if(data.title.includes(searchText)){
+          resultsArray.push(data)
+        }
+        else if(data.genre.includes(searchText)){
+          resultsArray.push(data)
+        }
+        else if(data.year.includes(searchText)){
+          resultsArray.push(data)
+        }
+        else if(data.rating.includes(searchText)){
+          resultsArray.push(data)
+        }
+        else if(data.actors.includes(searchText)){
+          resultsArray.push(data)
+        }
+    })
+    this.setState({
+      allMovies: resultsArray
+    })
   }
   addNewMovie(){
+    var movieList = this.state.allMovies
+    var movID = 0
+    var makeNewID = movieList.forEach(function(data){
+      if(data.id >= movID){
+        movID = movID + 1;
+      }
+    })
     var movTitle = document.getElementById('newMovTitle').value
     var movGenre = document.getElementById('newMovGenre').value
     var movActors = document.getElementById('newMovActors').value
@@ -43,21 +82,24 @@ class App extends React.Component {
       genre: movGenre,
       rating: movRating,
       actors: movActors,
-      year: movYear
+      year: movYear,
+      id: movID
     }
-    var movieList = this.state.allMovies
     movieList.push(newMovie)
     this.setState({
       allMovies: movieList
     })
     console.log(movieList)
     localStorage.setItem('allMovies', JSON.stringify(movieList))
+    document.getElementById('newMovTitle').value = ''
+    document.getElementById('newMovGenre').value = ''
+    document.getElementById('newMovActors').value = ''
+    document.getElementById('newMovRating').value = ''
+    document.getElementById('newMovYear').value = ''
   }
   render() {
-    // console.log(this.state.allMovies)
     var allMyMovies = this.state.allMovies.map((data, i) => {
-      // console.log(data)
-      return <SingleMovie data={data} key={i} />
+      return <SingleMovie data={data} key={i} functionToPass={this.testFunction} />
     })
     return <div>
     <div className='fixed'>
@@ -79,7 +121,7 @@ class App extends React.Component {
         <h1>My Movie Collection</h1>
       </div>
       <div className='searchArea'>
-      <p>Search My Movies<input type='text' className='searchText'></input><button className='btn btn-success' onClick={this.searchMovies}>Go</button></p>
+      <p>Search My Movies<input type='text' id='searchText' className='searchText'></input><button className='btn btn-success' onClick={this.beforeSearch}>Go</button></p>
       </div>
 
       <div className='movieArea'>
