@@ -85,6 +85,9 @@ class App extends React.Component {
       year: movYear,
       id: movID
     }
+    if(movTitle === '' || movGenre === 'Select Movie Genre' || movActors === '' || movRating === 'Select Movie Rating' || movYear === ''){
+      return alert('Please fill out all fields')
+    }
     movieList.push(newMovie)
     this.setState({
       allMovies: movieList
@@ -96,6 +99,7 @@ class App extends React.Component {
     document.getElementById('newMovActors').value = ''
     document.getElementById('newMovRating').value = ''
     document.getElementById('newMovYear').value = ''
+
   }
   render() {
     var allMyMovies = this.state.allMovies.map((data, i) => {
@@ -107,9 +111,34 @@ class App extends React.Component {
     <h1>Add New Movie</h1>
       <div className='form-group'>
         <p className='movieInfoInput'>Movie Title<input type='text' id='newMovTitle' className='newTextbox'></input></p>
-        <p className='movieInfoInput'>Movie Genre<input type='text' id='newMovGenre' className='newTextbox'></input></p>
+        <p className='movieInfoInput'>
+        Movie Genre
+        <select type='text' id='newMovGenre' className='form-control newTextbox' defaultValue='Select Movie Genre'>
+          <option disabled>Select Movie Genre</option>
+          <option>Action</option>
+          <option>Animated</option>
+          <option>Anime</option>
+          <option>Children</option>
+          <option>Comedy</option>
+          <option>Documentary</option>
+          <option>Drama</option>
+          <option>Horror</option>
+          <option>Mystery</option>
+          <option>Romance</option>
+          <option>Thriller</option>
+          <option>Other</option>
+        </select></p>
         <p className='movieInfoInput'>Movie Actors<input type='text' id='newMovActors' className='newTextbox'></input></p>
-        <p className='movieInfoInput'>Movie Rating<input type='text' id='newMovRating' className='newTextbox'></input></p>
+        <p className='movieInfoInput'>
+        Movie Rating
+          <select type='text' id='newMovRating' default='Select Movie Rating' className='form-control newTextbox' defaultValue='Select Movie Rating'>
+            <option disabled>Select Movie Rating</option>
+            <option>G</option>
+            <option>PG</option>
+            <option>PG-13</option>
+            <option>R</option>
+          </select>
+          </p>
         <p className='movieInfoInput'>Movie Year<input type='text' id='newMovYear' className='newTextbox'></input></p>
         <button type='button' className='btn btn-default' onClick={this.addNewMovie}>Add New Movie</button>
       </div>
