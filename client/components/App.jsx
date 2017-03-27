@@ -15,6 +15,7 @@ class App extends React.Component {
       allMovies: []
     }
   }
+  //if movies are stored in local storage, use that info to set initial state allMovies
   componentDidMount(){
     if(localStorage.getItem('allMovies')){
     this.setState({
@@ -22,10 +23,12 @@ class App extends React.Component {
     })
    }
   }
+  //used to reset movie library search query
   testFunction(){
     this.setState({
       allMovies: JSON.parse(localStorage.getItem('allMovies'))
     })
+    document.getElementById('searchText').value = ''
   }
   //properly resets this.state.allmovies to reflect all movies in library prior to narrowing search field in searchMovies()
   beforeSearch(){
@@ -39,23 +42,23 @@ class App extends React.Component {
     this.setState({
       allMovies: JSON.parse(localStorage.getItem('allMovies'))
     })
-    console.log(this.state.allMovies)
     var resultsArray = []
     var searchText = document.getElementById('searchText').value
     var movieQuery = this.state.allMovies.forEach(function(data){
-        if(data.title.includes(searchText)){
+        var querySearch = searchText.toUpperCase()
+        if(data.title.toUpperCase().includes(querySearch)){
           resultsArray.push(data)
         }
-        else if(data.genre.includes(searchText)){
+        else if(data.genre.toUpperCase().includes(querySearch)){
           resultsArray.push(data)
         }
-        else if(data.year.includes(searchText)){
+        else if(data.year.toUpperCase().includes(querySearch)){
           resultsArray.push(data)
         }
-        else if(data.rating.includes(searchText)){
+        else if(data.rating.toUpperCase().includes(querySearch)){
           resultsArray.push(data)
         }
-        else if(data.actors.includes(searchText)){
+        else if(data.actors.toUpperCase().includes(querySearch)){
           resultsArray.push(data)
         }
     })
@@ -63,6 +66,7 @@ class App extends React.Component {
       allMovies: resultsArray
     })
   }
+  //grabs user input from DOM to create new movie to add to library
   addNewMovie(){
     var movieList = this.state.allMovies
     var movID = 0
@@ -92,7 +96,6 @@ class App extends React.Component {
     this.setState({
       allMovies: movieList
     })
-    console.log(movieList)
     localStorage.setItem('allMovies', JSON.stringify(movieList))
     document.getElementById('newMovTitle').value = ''
     document.getElementById('newMovGenre').value = ''
@@ -102,6 +105,7 @@ class App extends React.Component {
 
   }
   render() {
+    //passing info along to seperate component to build out individual movie card
     var allMyMovies = this.state.allMovies.map((data, i) => {
       return <SingleMovie data={data} key={i} functionToPass={this.testFunction} />
     })
@@ -150,7 +154,7 @@ class App extends React.Component {
         <h1>My Movie Collection</h1>
       </div>
       <div className='searchArea'>
-      <p>Search My Movies<input type='text' id='searchText' className='searchText'></input><button className='btn btn-success' onClick={this.beforeSearch}>Go</button></p>
+      <p>Search My Movies<input type='text' id='searchText' className='searchText'></input><button className='btn btn-success' onClick={this.beforeSearch}>Go</button><button className='btn btn-danger clearBtn' onClick={this.testFunction}>X</button></p>
       </div>
 
       <div className='movieArea'>
